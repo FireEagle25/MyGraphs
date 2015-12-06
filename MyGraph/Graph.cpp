@@ -70,12 +70,8 @@ bool Graph::remove(int vertexId) {
 }
 
 void Graph::BypassWide(int id) {
-	bool* used = new bool[100];
-	for(int i = 0; i < 100; i ++)
-		used[i] = false;
-
-	list<Vertex>::iterator it = graf.begin();
-	used[id] = true;
+	list<int> used;
+	used.push_back(id);
 
 	queue<int> q;
 	cout << id << " ";
@@ -89,8 +85,8 @@ void Graph::BypassWide(int id) {
 		while (it!=currRelatedIds.end())
 		{
 			int v = *it;
-			if (!used[v]) {
-				used[v] = true;
+			if (!(find(begin(used), end(used), v) != end(used))) {
+				used.push_back(v);
 				cout << v << " ";
 				q.push(v);
 			}
