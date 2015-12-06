@@ -1,4 +1,4 @@
-﻿Построение начато 06.12.2015 20:11:31.
+﻿Построение начато 07.12.2015 0:40:10.
      1>Проект "C:\Users\FireEagle\documents\visual studio 2012\Projects\MyGraph\MyGraph\MyGraph.vcxproj" в узле 2 (целевые объекты Build).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Graph.cpp
@@ -12,4 +12,4 @@
 
 Построение успешно завершено.
 
-Затраченное время: 00:00:01.07
+Затраченное время: 00:00:01.32

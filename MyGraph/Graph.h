@@ -5,10 +5,11 @@ class Graph
 	public:
 		Graph();
 		~Graph();
-		void add(int, int[], int);
-		Vertex findById(int );
-		bool remove(int);
+		void Add(int, int[], int);
+		Vertex FindById(int );
+		bool Remove(int);
 		void BypassWide(int);
+		void PrintIndependentSets();
 	private:
-		list<Vertex> graf;
+		list<Vertex> graph;
 };

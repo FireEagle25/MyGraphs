@@ -5,16 +5,19 @@
 using namespace std;
 
 int main() {
-	Graph *newGraf = new Graph();
+	Graph *newgraph = new Graph();
 	int a[3] = {1,2,3};
-	newGraf->add(1,a,3);
+	newgraph->Add(1,a,3);
 	int b[8] = {1,2,3,6,7,99,32,56};
-	newGraf->add(3,b,8);
-	newGraf->remove(2);
+	newgraph->Add(3,b,8);
+	int c[2] = {1,2};
+	newgraph->Add(134,c,2);
 
-	Vertex a1 = newGraf->findById(1);
+	newgraph->Remove(2);
 
-	newGraf->BypassWide(3);
+	Vertex a1 = newgraph->FindById(1);
+
+	newgraph->BypassWide(1);
 	system("pause");
 	return 0;
 }
