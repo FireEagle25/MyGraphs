@@ -14,7 +14,6 @@ void Graph::Add(int vertexId, int relatedVertexes[], int size) {
 	for (int i = 0; i < size; i++) {
 		Vertex currSearchVertex = this->FindById(relatedVertexes[i]);
 		if (currSearchVertex.GetId() == currSearchVertex.GetEmptyIndexValue()) {
-			int* emptyArr = new int[0];
 			int relatedIdForCurrVertex[1] = {vertexId};
 			Vertex newVertex(relatedVertexes[i], relatedIdForCurrVertex, 1);
 			graph.push_back(newVertex);
