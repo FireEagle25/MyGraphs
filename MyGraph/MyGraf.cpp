@@ -12,12 +12,16 @@ int main() {
 	newgraph->Add(3,b,8);
 	int c[2] = {1,2};
 	newgraph->Add(134,c,2);
+	int ads[2] = {666,392};
+	newgraph->Add(6,ads,2);
 
 	newgraph->Remove(2);
 
 	Vertex a1 = newgraph->FindById(1);
 
 	newgraph->BypassWide(1);
+
+	newgraph->PrintMaxIndependentSet();
 	system("pause");
 	return 0;
 }

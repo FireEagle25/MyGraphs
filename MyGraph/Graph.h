@@ -1,4 +1,5 @@
 #include <list>
+#include <set>
 
 class Graph
 {
@@ -9,7 +10,9 @@ class Graph
 		Vertex FindById(int );
 		bool Remove(int);
 		void BypassWide(int);
-		void PrintIndependentSets();
+		void PrintMaxIndependentSet();
 	private:
+		bool isNotNotContainNoOneVertexRelatedWithEveryVertexInCandidates(set<int> candidates, set<int> not);
+		void Extend(set<int> candidates, set<int> not, set<int> compsub);
 		list<Vertex> graph;
 };

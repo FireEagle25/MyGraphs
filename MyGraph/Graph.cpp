@@ -2,6 +2,7 @@
 #include <iostream>
 #include <list>
 #include <queue>
+#include <set>
 #include "Vertex.h"
 #include "Graph.h"
 using namespace std;
@@ -14,9 +15,16 @@ void Graph::Add(int vertexId, int relatedVertexes[], int size) {
 	for (int i = 0; i < size; i++) {
 		Vertex currSearchVertex = this->FindById(relatedVertexes[i]);
 		if (currSearchVertex.GetId() == currSearchVertex.GetEmptyIndexValue()) {
-			int relatedIdForCurrVertex[1] = {vertexId};
-			Vertex newVertex(relatedVertexes[i], relatedIdForCurrVertex, 1);
-			graph.push_back(newVertex);
+			if (vertexId != relatedVertexes[i]) {
+				int relatedIdForCurrVertex[2] = {vertexId, relatedVertexes[i]};
+				Vertex newVertex(relatedVertexes[i], relatedIdForCurrVertex, 2);
+				graph.push_back(newVertex);
+			}
+			else {
+				int relatedIdForCurrVertex[1] = {vertexId};
+				Vertex newVertex(relatedVertexes[i], relatedIdForCurrVertex, 1);
+				graph.push_back(newVertex);
+			}
 		}
 	}
 
@@ -103,5 +111,112 @@ void Graph::BypassWide(int id) {
 	return;
 }
 
-void Graph::PrintIndependentSets() {
+/*
+ПРОЦЕДУРА extend (candidates, not):
+  ПОКА candidates НЕ пусто И not не содержит ни одной вершины, НЕ СОЕДИНЕННОЙ НИ С ОДНОЙ из вершин во множестве candidates, 
+  ВЫПОЛНЯТЬ:
+  1 Выбираем вершину v из candidates и добавляем ее в compsub
+  2 Формируем new_candidates и new_not, удаляя из candidates и not вершины, СОЕДИНЕННЫЕ с v.
+  3 ЕСЛИ new_candidates и new_not пусты
+  4 ТО compsub – независимое множество
+  5 ИНАЧЕ рекурсивно вызываем extend (new_candidates, new_not)
+  6 Удаляем v из compsub и candidates, и помещаем в not
+  */
+
+void Graph::PrintMaxIndependentSet() {
+	set<int> allVertexes = set<int>();
+	list<Vertex>::iterator it = graph.begin();
+	while (it != graph.end()) {
+		allVertexes.insert((*it).GetId());
+		it++;
+	}
+
+	Extend(allVertexes, set<int>(), set<int>());
+}
+
+void Graph::Extend(set<int> candidates, set<int> not, set<int> compsub) {
+	while (candidates.size() > 0 && isNotNotContainNoOneVertexRelatedWithEveryVertexInCandidates(candidates, not)) {
+		int v = (*candidates.begin());
+		candidates.erase(v);
+		compsub.insert(v);
+
+		set<int> new_candidates = set<int>();
+		set<int> new_not = set<int>();
+
+		list<int> relatedWithVVertexes = FindById(v).GetRelatedIds();
+
+		//Формируем new_candidates
+		set<int>::iterator it1 = candidates.begin();
+		while (it1 != candidates.end()) {
+			list<int>::iterator it2 = relatedWithVVertexes.begin();
+			bool isCurrVertexRelatedWithV = false;
+			while (it2 != relatedWithVVertexes.end()) {
+				if ((*it2) == (*it1)) {
+					isCurrVertexRelatedWithV = true;
+				}
+				it2++;
+			}
+			if(!isCurrVertexRelatedWithV)
+				new_candidates.insert(*it1);
+			it1++;
+		}
+
+		//Формируем new_not
+		set<int>::iterator it = not.begin();
+		while (it != not.end()) {
+			list<int>::iterator it2 = relatedWithVVertexes.begin();
+			bool isCurrVertexRelatedWithV = false;
+			while (it2 != relatedWithVVertexes.end()) {
+				if ((*it2) == (*it)) {
+					isCurrVertexRelatedWithV = true;
+				}
+				it2++;
+			}
+			if(!isCurrVertexRelatedWithV)
+				new_not.insert(*it);
+			it++;
+		}
+
+		if (new_candidates.size() == 0 && new_not.size() == 0) {
+			cout << "Max independent set: " << endl;
+			set<int>::iterator it3 = compsub.begin();
+			while (it3 != compsub.end()) {
+				cout << (*it3) << " ";
+				it3++;
+			}
+			cout << endl;
+		}
+		else
+			Extend(new_candidates, new_not, compsub);
+
+		candidates.erase(v);
+		compsub.erase(v);
+		not.insert(v);
+
+	}
+}
+
+bool Graph::isNotNotContainNoOneVertexRelatedWithEveryVertexInCandidates(set<int> candidates, set<int> not) {
+	//not не содержит ни одной вершины, НЕ СОЕДИНЕННОЙ НИ С ОДНОЙ из вершин во множестве candidates => true
+	set<int> relatedInNotVertexes = set<int>();
+
+	set<int>::iterator it = candidates.begin();
+	while (it != candidates.end()) {
+		Vertex currVertex = FindById((*it));
+		list<int> currRelatedVetexes = currVertex.GetRelatedIds();
+		list<int>::iterator it2 = currRelatedVetexes.begin();
+		while (it2 != currRelatedVetexes.end()) {
+			relatedInNotVertexes.insert(*it2);
+			it2++;
+		}
+		it++;
+	}
+
+	set<int>::iterator it2 = relatedInNotVertexes.begin();
+	while (it2 != relatedInNotVertexes.end()) {
+		if (!not.count(*it2) == 0)
+			return false;
+		it2++;
+	}
+	return true;
 }

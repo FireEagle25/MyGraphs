@@ -26,6 +26,5 @@ class Vertex
 		const static int EMPTY_INDEX = -1;
 		int id;
 		list<int> relatedIds;
-
 		bool AddRelatedVertex(int newVertexId);
 };
