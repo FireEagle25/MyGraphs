@@ -6,18 +6,17 @@ using namespace std;
 
 int main() {
 	Graph *newgraph = new Graph();
-	int a[3] = {1,2,3};
-	newgraph->Add(1,a,3);
-	int b[8] = {1,2,3,6,7,99,32,56};
-	newgraph->Add(3,b,8);
-	int c[2] = {1,2};
-	newgraph->Add(134,c,2);
-	int ads[2] = {666,392};
-	newgraph->Add(6,ads,2);
+	int a[2] = {2,4};
+	newgraph->Add(1,a,2);
 
-	newgraph->Remove(2);
+	int b[2] = {3, 5};
+	newgraph->Add(2,b,2);
 
-	Vertex a1 = newgraph->FindById(1);
+	int c[1] = {4};
+	newgraph->Add(3,c,1);
+
+	int c2[2] = {6, 7};
+	newgraph->Add(5,c2,2);
 
 	newgraph->BypassWide(1);
 

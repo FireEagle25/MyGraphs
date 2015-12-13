@@ -11,7 +11,14 @@ Graph::Graph(){}
 
 Graph::~Graph(){}
 
-void Graph::Add(int vertexId, int relatedVertexes[], int size) {
+void Graph::Add(int vertexId, int relatedVertexes1[], int size1) {
+	int size = size1 + 1;
+	int* relatedVertexes = new int[size];
+
+	for(int i = 0; i < size - 1; i++)
+		relatedVertexes[i] = relatedVertexes1[i];
+	relatedVertexes[size - 1] = vertexId;
+
 	for (int i = 0; i < size; i++) {
 		Vertex currSearchVertex = this->FindById(relatedVertexes[i]);
 		if (currSearchVertex.GetId() == currSearchVertex.GetEmptyIndexValue()) {
@@ -130,13 +137,15 @@ void Graph::PrintMaxIndependentSet() {
 		allVertexes.insert((*it).GetId());
 		it++;
 	}
-
+	cout << "-------------------------------------" << endl;
+	cout << "Max independent sets: " << endl;
 	Extend(allVertexes, set<int>(), set<int>());
+	cout << "-------------------------------------" << endl;
 }
 
 void Graph::Extend(set<int> candidates, set<int> not, set<int> compsub) {
 	while (candidates.size() > 0 && isNotNotContainNoOneVertexRelatedWithEveryVertexInCandidates(candidates, not)) {
-		int v = (*candidates.begin());
+		int v = *(candidates.begin());
 		candidates.erase(v);
 		compsub.insert(v);
 
@@ -178,7 +187,6 @@ void Graph::Extend(set<int> candidates, set<int> not, set<int> compsub) {
 		}
 
 		if (new_candidates.size() == 0 && new_not.size() == 0) {
-			cout << "Max independent set: " << endl;
 			set<int>::iterator it3 = compsub.begin();
 			while (it3 != compsub.end()) {
 				cout << (*it3) << " ";
@@ -214,9 +222,9 @@ bool Graph::isNotNotContainNoOneVertexRelatedWithEveryVertexInCandidates(set<int
 
 	set<int>::iterator it2 = relatedInNotVertexes.begin();
 	while (it2 != relatedInNotVertexes.end()) {
-		if (!not.count(*it2) == 0)
-			return false;
+		if (!not.count(*it2) > 0)
+			return true;
 		it2++;
 	}
-	return true;
+	return false;
 }
